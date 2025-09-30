@@ -1,245 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ROBLOX CONDO GAMES</title>
 <style>
   :root {
     --accent: #ff6600;
-    --bg-dark: #000;
-    --bg-light: #1a1a1a;
+    --bg-dark: #0a0a1a;
   }
 
   * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
   }
 
-  body, html {
+  html, body {
     height: 100%;
+    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: radial-gradient(circle at center, #0b0c10, #000000);
-    overflow: hidden;
-    color: white;
+    background: radial-gradient(circle at top, #0a0a1a, #000);
+    color: #fff;
+    overflow-x: hidden;
   }
 
-  /* Falling stars */
-  .star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    animation: fall linear infinite;
+  /* Falling Stars Effect */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: transparent url('https://i.ibb.co/7jZJ3Qp/stars.png') repeat;
+    background-size: contain;
+    animation: moveStars 50s linear infinite;
+    z-index: -1;
+  }
+  @keyframes moveStars {
+    from {background-position: 0 0;}
+    to {background-position: 10000px 10000px;}
   }
 
-  @keyframes fall {
-    0% { transform: translateY(-10px) translateX(0); opacity: 1; }
-    100% { transform: translateY(100vh) translateX(20px); opacity: 0; }
+  .wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
   }
 
-  /* Loading screen */
-  #loadingScreen {
+  .header {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+  }
+
+  /* Modal overlay */
+  .overlay {
     position: fixed;
     inset: 0;
-    background: black;
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     z-index: 20;
   }
-  #loadingScreen h1 {
-    color: var(--accent);
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  .loader {
-    border: 5px solid rgba(255,255,255,0.2);
-    border-top: 5px solid var(--accent);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
 
-  /* Verification modal */
-  #overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 15;
-  }
   .modal {
     background: #111;
-    padding: 25px 35px;
-    border-radius: 12px;
+    padding: 26px;
+    border-radius: 14px;
     text-align: center;
-    box-shadow: 0 0 20px var(--accent);
-    max-width: 320px;
-  }
-  .modal h2 {
-    font-size: 1.8rem;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-  .modal p {
-    margin-bottom: 18px;
-    color: #ccc;
-  }
-  .modal-btn {
-    padding: 10px 25px;
-    border: none;
-    margin: 5px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-  }
-  .yes-btn {
-    background: var(--accent);
-    color: black;
-  }
-  .yes-btn:hover {
-    background: #ff7c1a;
-  }
-  .no-btn {
-    background: #444;
-    color: white;
-  }
-  .no-btn:hover {
-    background: #666;
+    box-shadow: 0 0 30px var(--accent);
+    max-width: 300px;
   }
 
-  /* Main content */
-  .wrapper {
-    max-width: 900px;
-    margin: 60px auto;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    z-index: 5;
-  }
-  .header {
-    font-size: 2.3rem;
-    font-weight: 800;
+  .modal h2 {
+    margin: 0 0 14px;
+    font-size: 1.6rem;
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent), 0 0 30px var(--accent);
-    margin-bottom: 25px;
+    text-shadow: 0 0 8px var(--accent);
+  }
+
+  .modal p {
+    color: #ccc;
+    margin-bottom: 18px;
+  }
+
+  .modal-btn {
+    padding: 12px 26px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    margin: 0 8px;
+    background: var(--accent);
+    color: #111;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 102, 0, 0.6);
+    transition: transform 0.2s ease;
+  }
+
+  .modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px var(--accent);
   }
 
   /* Game picker */
-  #gamePicker {
+  .game-picker {
     display: none;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 18px;
-  }
-  .game-card {
-    padding: 14px 30px;
-    border-radius: 10px;
-    background: rgba(255, 102, 0, 0.1);
-    border: 2px solid var(--accent);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(255,102,0,0.4);
-    transition: all 0.3s ease;
-    min-width: 200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .game-card:hover {
-    background: rgba(255,102,0,0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px var(--accent);
+    gap: 15px;
+    margin-top: 30px;
   }
 
-  .arrow {
-    font-size: 1.2rem;
-    margin-left: 10px;
+  .game-picker.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .game-card {
+    background: rgba(255, 102, 0, 0.15);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 24px;
+    min-width: 160px;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s;
+  }
+
+  .game-card:hover {
+    transform: translateY(-6px);
+    background: var(--accent);
+    color: #111;
+    box-shadow: 0 0 15px var(--accent);
   }
 
   /* Discord button */
   .discord-btn {
     display: inline-block;
     margin-top: 40px;
-    padding: 14px 40px;
+    padding: 14px 32px;
     border-radius: 12px;
     background: var(--accent);
-    color: black;
+    color: #111;
     font-weight: bold;
     text-decoration: none;
-    box-shadow: 0 0 15px var(--accent), 0 0 40px rgba(255,102,0,0.5);
-    transition: all 0.3s ease;
-  }
-  .discord-btn:hover {
-    background: #ff7c1a;
-    box-shadow: 0 0 25px var(--accent), 0 0 50px rgba(255,102,0,0.8);
+    box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(255, 102, 0, 0.6);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* Not eligible text */
-  #notEligible {
-    display: none;
-    text-align: center;
-    color: #ff4d4d;
-    font-size: 1.3rem;
-    font-weight: bold;
+  .discord-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px var(--accent), 0 0 60px rgba(255, 102, 0, 0.9);
+  }
+
+  /* Private server section */
+  .mode-switch {
     margin-top: 20px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    background: #008cff;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 0 15px #008cff;
+    transition: 0.3s;
+  }
+
+  .mode-switch:hover {
+    background: #00aaff;
+    transform: scale(1.05);
+  }
+
+  .generate-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,20,0.95);
+    color: white;
+    font-size: 1.6rem;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+  }
+
+  @media(max-width: 600px) {
+    .game-card {
+      min-width: 120px;
+      font-size: 0.95rem;
+      padding: 10px 16px;
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- Loading Screen -->
-<div id="loadingScreen">
-  <h1>Loading...</h1>
-  <div class="loader"></div>
-</div>
-
-<!-- Verification -->
-<div id="overlay">
-  <div class="modal">
-    <h2>18+ Verification</h2>
-    <p>Are you 18 or older?</p>
-    <button class="modal-btn yes-btn" id="yesBtn">Yes</button>
-    <button class="modal-btn no-btn" id="noBtn">No</button>
+<!-- Verification modal -->
+<div id="overlay" class="overlay">
+  <div class="modal" id="verifyModal">
+    <h2>Are you 18+ ?</h2>
+    <p>Please confirm your age to continue.</p>
+    <button class="modal-btn" id="yesBtn">Yes</button>
+    <button class="modal-btn" id="noBtn">No</button>
   </div>
 </div>
 
+<!-- Generate overlay -->
+<div id="generateOverlay" class="generate-overlay">
+  Generating Private Servers...
+</div>
+
 <div class="wrapper">
-  <div class="header">BEST ROBLOX CONDO GAMES</div>
-  <div id="gamePicker"></div>
-  <div id="notEligible">You’re not eligible for this content.</div>
-  <a href="https://discord.gg/RZf4Pbde3m" target="_blank" class="discord-btn">Join Our Discord 🚀</a>
+  <div class="header" id="headerTitle">BEST ROBLOX CONDO GAMES</div>
+
+  <!-- Switch to private servers button -->
+  <button class="mode-switch" id="switchModeBtn">Generate Private Servers</button>
+
+  <div id="gamePicker" class="game-picker"></div>
+
+  <!-- Discord button -->
+  <a href="https://discord.gg/RZf4Pbde3m" target="_blank" class="discord-btn">
+    Join Our Discord 🚀
+  </a>
 </div>
 
 <script>
-/* Falling stars generator */
-function createStars(num) {
-  for (let i = 0; i < num; i++) {
-    const star = document.createElement("div");
-    star.classList.add("star");
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.animationDuration = (Math.random() * 5 + 3) + "s";
-    star.style.opacity = Math.random();
-    document.body.appendChild(star);
-  }
-}
-createStars(60);
-
-/* Games list with links */
+/* -------- Game list -------- */
 const games = [
   { title: "Meet Your Neko Stacy [Update🥵]", link: "https://roblox.com.ge/games/131764904553992/Meet-Your-Neko-Stacy-Update?privateServerLinkCode=63776496008489733878933289493190" },
   { title: "Weird Neko Untitled Game", link: "https://roblox.com.ge/games/76106209840076/Weird-Neko-Untitled-Game?privateServerLinkCode=63776496008489733878933289493190" },
@@ -252,35 +248,40 @@ const games = [
   { title: "Character AI", link: "https://roblox.com.ge/games/76518416077437/Character-AI?privateServerLinkCode=63776496008489733878933289493190" },
 ];
 
-/* Load game cards */
+/* -------- Render games -------- */
 function loadGames() {
-  const picker = document.getElementById("gamePicker");
-  picker.innerHTML = games.map(g =>
-    `<div class="game-card" onclick="window.open('${g.link}', '_blank')">
-       ${g.title} <span class="arrow">➡️</span>
-     </div>`
-  ).join("");
+  const container = document.getElementById("gamePicker");
+  container.innerHTML = games.map(game => `
+    <div class="game-card" onclick="window.open('${game.link}', '_blank')">
+      ${game.title}
+    </div>
+  `).join("");
 }
 
-/* Loading screen logic */
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("loadingScreen").style.display = "none";
-    document.getElementById("overlay").style.display = "flex";
-  }, 3000);
-});
-
-/* Verification logic */
+/* -------- Verification -------- */
 document.getElementById("yesBtn").addEventListener("click", () => {
   document.getElementById("overlay").style.display = "none";
   loadGames();
-  document.getElementById("gamePicker").style.display = "flex";
+  setTimeout(() => document.getElementById("gamePicker").classList.add("show"), 50);
 });
 
 document.getElementById("noBtn").addEventListener("click", () => {
-  document.getElementById("overlay").style.display = "none";
-  document.getElementById("notEligible").style.display = "block";
+  document.getElementById("verifyModal").innerHTML = `
+    <h2>Access Denied</h2>
+    <p>You're not eligible for this content.</p>
+  `;
+});
+
+/* -------- Switch to Private Servers -------- */
+document.getElementById("switchModeBtn").addEventListener("click", () => {
+  const overlay = document.getElementById("generateOverlay");
+  overlay.style.display = "flex";
+  setTimeout(() => {
+    overlay.style.display = "none";
+    document.getElementById("headerTitle").innerText = "PRIVATE SERVERS";
+  }, 2000);
 });
 </script>
+
 </body>
 </html>
