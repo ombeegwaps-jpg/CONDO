@@ -1,210 +1,252 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roblox Game Hub</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Condo Games — Cute Slider</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#ffd7e6;
+    --pink-2:#ffc2dd;
+    --accent:#ff6fa8;
+    --muted:#7b7b85;
+    --card:#fff;
+    --shadow:0 10px 30px rgba(255,120,170,0.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:"Inter",sans-serif;
+    background:linear-gradient(180deg,#fff6f8 0%,#fff0f3 100%);
+    display:flex;justify-content:center;
+    padding:24px 12px;
+    color:#222;
+  }
+  .container{width:100%;max-width:420px;}
 
-    body {
-      background: #1a0000;
-      color: #fff;
-      text-align: center;
-    }
+  /* Logo */
+  .logoWrap{text-align:center;margin-bottom:20px;}
+  .brand{
+    display:inline-flex;align-items:center;gap:12px;
+    background:var(--card);
+    padding:10px 20px;border-radius:40px;
+    box-shadow:0 8px 18px rgba(255,120,170,0.1);
+  }
+  .icon{
+    width:44px;height:44px;border-radius:12px;
+    background:linear-gradient(135deg,var(--pink-2),var(--pink-1));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:18px;
+  }
+  .brand h1{margin:0;font-size:20px;font-weight:700;color:#2b2b34;}
+  .brand h1 .accent{color:var(--accent);font-style:italic;}
+  .subtitle{font-size:12px;color:var(--muted);margin-top:6px;}
 
-    /* Top bar */
-    .top-bar {
-      background: #000;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      font-size: 14px;
-    }
-    .online { color: #00ff00; }
-    .active { color: #ff4040; }
+  /* Panel */
+  .panel{
+    background:var(--card);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:var(--shadow);
+  }
 
-    /* Hero section */
-    header {
-      padding: 40px 20px;
-      background: linear-gradient(180deg, #1a0000, #330000);
-    }
-    header h1 {
-      font-size: 40px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #ff6666;
-    }
-    header p {
-      font-size: 16px;
-      max-width: 400px;
-      margin: 0 auto 20px;
-      color: #ddd;
-    }
+  .section-title{text-align:center;margin-bottom:18px;}
+  .section-title h2{
+    font-size:14px;font-weight:700;color:var(--accent);
+    white-space:pre-line;
+  }
 
-    /* Buttons */
-    .buttons {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: 0.3s ease;
-    }
-    .btn-play {
-      background: #ff3333;
-      color: white;
-      border: none;
-    }
-    .btn-play:hover {
-      background: #ff5555;
-    }
-    .btn-community {
-      border: 2px solid #fff;
-      color: #fff;
-      background: transparent;
-    }
-    .btn-community:hover {
-      background: #fff;
-      color: #000;
-    }
+  /* Slider */
+  .slider{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:10px;
+  }
+  .arrow{
+    font-size:28px;
+    background:linear-gradient(135deg,var(--pink-2),var(--pink-1));
+    border:none;
+    border-radius:50%;
+    width:46px;height:46px;
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(255,120,170,0.25);
+    transition:transform .15s ease;
+  }
+  .arrow:hover{transform:scale(1.1);}
+  .arrow:active{transform:scale(0.92);}
 
-    /* Game Picker */
-    .game-picker-container {
-      padding: 30px 20px;
-      background: #260000;
-    }
-    .game-picker-container h2 {
-      font-size: 28px;
-      color: #ff5555;
-      margin-bottom: 20px;
-    }
-    .game-picker {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .game-card {
-      background: #1a0000;
-      padding: 10px;
-      border-radius: 12px;
-      transition: transform 0.2s ease;
-    }
-    .game-card:hover {
-      transform: translateY(-5px);
-    }
-    .game-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      background: #111; /* fallback background while loading */
-    }
-    .game-card h3 {
-      font-size: 16px;
-      color: #fff;
-    }
+  .game-card{
+    flex:1;
+    background:linear-gradient(180deg,rgba(255,245,248,0.9),rgba(255,245,248,0.6));
+    border-radius:14px;
+    padding:16px;
+    display:flex;align-items:center;gap:14px;
+    box-shadow:0 6px 18px rgba(255,120,170,0.06);
+    min-height:80px;
+    overflow:hidden;
+  }
+  .icon-box{
+    min-width:56px;height:56px;border-radius:12px;
+    background:linear-gradient(135deg,#ffdfea,#ffd7e6);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);font-weight:700;font-size:20px;
+  }
+  .game-info{flex:1;}
+  .title{margin:0;font-size:16px;font-weight:700;color:var(--accent);}
+  .subtitle{margin:4px 0 0;font-size:13px;color:var(--muted);}
 
-    footer {
-      padding: 15px;
-      font-size: 13px;
-      background: #000;
-      color: #888;
-    }
-  </style>
+  /* Preview */
+  .hero{margin-top:16px;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(20,20,20,0.06);height:200px;position:relative;}
+  .hero img{
+    width:100%;height:100%;object-fit:cover;
+    position:absolute;top:0;left:0;
+    transition:transform 0.6s ease,opacity 0.6s ease;
+  }
+  .hero img.slide-out-left{transform:translateX(-100%);opacity:0;}
+  .hero img.slide-in-right{transform:translateX(100%);opacity:0;}
+  .hero img.active{transform:translateX(0);opacity:1;}
+
+  /* Join button */
+  .join-btn{
+    display:block;
+    margin-top:12px;
+    width:100%;
+    padding:12px 0;
+    border:none;
+    background:linear-gradient(135deg,var(--accent),#ff9fbf);
+    color:#fff;
+    font-weight:700;
+    font-size:16px;
+    border-radius:10px;
+    box-shadow:0 8px 18px rgba(255,120,170,0.25);
+    cursor:pointer;
+    transition:background .3s ease, transform .1s;
+    text-decoration:none;
+    text-align:center;
+  }
+  .join-btn:hover{background:linear-gradient(135deg,#ff82b0,#ffaac5);}
+  .join-btn:active{transform:scale(.96);}
+
+  .footer{margin-top:12px;text-align:center;font-size:13px;color:var(--muted);}
+</style>
 </head>
 <body>
-
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <span class="online" id="onlinePlayers">0 Online Players</span>
-    <span class="active" id="activeGames">0 Active Games</span>
+<div class="container">
+  <div class="logoWrap">
+    <div class="brand">
+      <div class="icon">CG</div>
+      <h1>Condo <span class="accent">Games</span></h1>
+    </div>
+    <div class="subtitle">✦ OFFICIAL WEBSITE #1 ✦</div>
   </div>
 
-  <!-- Hero Section -->
-  <header>
-    <h1>ROBLOX GAME HUB</h1>
-    <p>Discover a collection of safe, fun Roblox games.  
-       Join thousands of players in exciting experiences!</p>
-    <div class="buttons">
-      <a href="#" class="btn btn-play">Play Now</a>
-      <a href="https://roblox.com.py/communities/6627397242/" class="btn btn-community" target="_blank">Join Community</a>
+  <div class="panel">
+    <div class="section-title">
+      <h2>✧･ﾟ: *✧･ﾟ:*  🌸  SLIDE TO PICK YOUR GAME  🌸  *:･ﾟ✧*:･ﾟ✧</h2>
     </div>
-  </header>
 
-  <!-- Game Picker -->
-  <section class="game-picker-container">
-    <h2>Game Picker</h2>
-    <div class="game-picker" id="gamePicker"></div>
-  </section>
+    <div class="slider">
+      <button class="arrow" id="prevBtn">‹</button>
+      <div class="game-card" id="gameCard">
+        <div class="icon-box" id="gameIcon">CG</div>
+        <div class="game-info">
+          <p class="title" id="gameTitle"></p>
+          <p class="subtitle" id="gameSubtitle"></p>
+        </div>
+      </div>
+      <button class="arrow" id="nextBtn">›</button>
+    </div>
 
-  <footer>
-    &copy; 2025 Roblox Game Hub. All rights reserved.
-  </footer>
+    <div class="hero" id="hero">
+      <img src="" class="active" alt="Game preview">
+    </div>
 
-  <script>
-    // Sample data
-    const games = [
-      {
-        title: "Meet Your Neko Stacy [Update🥵]",
-        link: "https://roblox.com.ge/games/131764904553992/Meet-Your-Neko-Stacy-Update?privateServerLinkCode=63776496008489733878933289493190",
-        image: "https://i.postimg.cc/vT95cQX0/noFilter.webp"
-      },
-      {
-        title: "Weird Neko Untitled Game",
-        link: "https://roblox.com.ge/games/76106209840076/Weird-Neko-Untitled-Game?privateServerLinkCode=63776496008489733878933289493190",
-        image: "https://i.postimg.cc/mZND2zyJ/no-Filter-1.webp"
-      },
-      {
-        title: "Find the Neko Girl! [Join for a surprise.. 😏]",
-        link: "https://roblox.com.py/games/90908715811812/Find-the-Neko-Girl-Join-for-a-surprise?privateServerLinkCode=76045954308342296280066637188490",
-        image:"https://i.postimg.cc/6q7YzJcp/no-Filter-2.webp"
-      },
-      {
-        title: "Climb For Neko Girl!!!",
-        link: "https://roblox.com.py/games/14396638688/Climb-For-Neko-Girl?privateServerLinkCode=76045954308342296280066637188490",
-        image: "https://i.postimg.cc/L6GLjgGh/no-Filter-4.webp"
-      }
-    ];
+    <a id="joinBtn" class="join-btn" href="#" target="_blank">Join Game</a>
+  </div>
 
-    // Load games into picker
-    const gamePicker = document.getElementById("gamePicker");
-    games.forEach(game => {
-      const card = document.createElement("div");
-      card.className = "game-card";
-      card.innerHTML = `
-        <a href="${game.link}" target="_blank">
-          <img src="${game.image}" alt="${game.title}">
-          <h3>${game.title}</h3>
-        </a>
-      `;
-      gamePicker.appendChild(card);
+  <div class="footer">Made with ✧･ﾟ♥･ﾟ✧ • <a href="#" target="_blank">Join our Discord</a></div>
+</div>
+
+<script>
+  const games = [
+    {
+      title: "꒰ 🌷 ₊˚ companion Alya🥵 ₊˚🌷 ꒱",
+      subtitle: "Roleplay / Condo",
+      link: "https://roblox.com.ge/games/105900604563367/AI-Your-companion-Alya?privateServerLinkCode=83173949953083849982781203527296",
+      image: "https://i.postimg.cc/KjqfX2H0/noFilter.webp"
+    },
+    {
+      title: "⋆˙⟡ برج استفزاز Tower🥵 ⟡˙⋆",
+      subtitle: "Survival / Horror",
+      link: "https://roblox.com.ge/games/14410353050/Tower?privateServerLinkCode=83173949953083849982781203527296",
+      image: "https://i.postimg.cc/D0TmPjdy/no-Filter-1.webp"
+    },
+    {
+      title: "✦₊˚✧ Better Baddie? 🥵 ✧˚₊✦",
+      subtitle: "Sandbox / Social",
+      link: "https://roblox.com.ge/games/94014125650504/UPDATE-1-Better-Baddie?privateServerLinkCode=83173949953083849982781203527296",
+      image: "https://i.postimg.cc/vH4CvYTL/no-Filter-2.webp"
+    },
+    {
+      title: "❀ Talk With Neko 🤗 ❀",
+      subtitle: "AI Chatbot",
+      link: "https://roblox.com.ge/games/135584994052780/AI-Talk-With-Neko?privateServerLinkCode=83173949953083849982781203527296",
+      image: "https://i.postimg.cc/wvBwT2s7/no-Filter-3.webp"
+    }
+  ];
+
+  let currentIndex = 0;
+
+  const gameCard = document.getElementById('gameCard');
+  const gameIcon = document.getElementById('gameIcon');
+  const gameTitle = document.getElementById('gameTitle');
+  const gameSubtitle = document.getElementById('gameSubtitle');
+  const joinBtn = document.getElementById('joinBtn');
+  const hero = document.getElementById('hero');
+  let currentImg = hero.querySelector('img');
+
+  function showGame(i, direction="right") {
+    const g = games[i];
+    gameIcon.textContent = g.title.slice(0,2);
+    gameTitle.textContent = g.title;
+    gameSubtitle.textContent = g.subtitle;
+    joinBtn.href = g.link;
+    joinBtn.textContent = `Join ${g.title}`;
+
+    if(currentImg.src === g.image) return;
+
+    currentImg.classList.remove('active');
+    currentImg.classList.add(direction === "right" ? 'slide-out-left' : 'slide-out-left');
+
+    const newImg = document.createElement('img');
+    newImg.src = g.image;
+    newImg.classList.add(direction === "right" ? 'slide-in-right' : 'slide-in-right');
+    hero.appendChild(newImg);
+
+    requestAnimationFrame(()=>{
+      newImg.classList.add('active');
+      newImg.classList.remove('slide-in-right');
     });
 
-    // Online/Active counters (just random for demo)
-    document.getElementById("onlinePlayers").textContent = 
-      Math.floor(Math.random() * 4000 + 500) + " Online Players";
-    document.getElementById("activeGames").textContent = 
-      games.length + " Active Games";
-  </script>
+    setTimeout(()=>{
+      hero.removeChild(currentImg);
+      currentImg = newImg;
+    },600);
+  }
 
+  document.getElementById('prevBtn').addEventListener('click', ()=>{
+    currentIndex = (currentIndex - 1 + games.length) % games.length;
+    showGame(currentIndex,"left");
+  });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    currentIndex = (currentIndex + 1) % games.length;
+    showGame(currentIndex,"right");
+  });
+
+  // initialize
+  showGame(currentIndex);
+</script>
 </body>
 </html>
-8
