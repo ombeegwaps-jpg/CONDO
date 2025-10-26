@@ -1,315 +1,226 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Condo Games — Cute Slider</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎀 Roblox Condo Hangouts 🎀</title>
 <style>
-  :root{
-    --pink-1:#ffd7e6;
-    --pink-2:#ffc2dd;
-    --accent:#ff6fa8;
-    --muted:#7b7b85;
-    --card:#fff;
-    --shadow:0 10px 30px rgba(255,120,170,0.12);
+  body {
+    background: linear-gradient(135deg, #ffe1f2, #ffd6ec);
+    font-family: "Poppins", sans-serif;
+    color: #5b006b;
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    overflow-x: hidden;
   }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:"Inter",sans-serif;
-    background:linear-gradient(180deg,#fff6f8 0%,#fff0f3 100%);
-    display:flex;justify-content:center;
-    padding:24px 12px;
-    color:#222;
-  }
-  .container{width:100%;max-width:420px;display:none;opacity:0;transition:opacity .6s ease-in-out;}
 
-  /* Loading Screen */
-  .loading-screen {
+  h1 {
+    color: #ff68b4;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #fff;
+  }
+
+  .subtitle {
+    color: #a23c7b;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+  }
+
+  .player-count {
+    background: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    color: #ff4fa2;
+    font-weight: bold;
+    margin-bottom: 30px;
+    box-shadow: 0 0 12px rgba(255, 105, 180, 0.2);
+    transition: all 0.4s ease;
+  }
+
+  .games {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    justify-items: center;
+  }
+
+  .game {
+    background: #fff;
+    border-radius: 22px;
+    padding: 15px;
+    box-shadow: 0 5px 18px rgba(255, 105, 180, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    width: 250px;
+  }
+
+  .game:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+  }
+
+  .img-box {
+    width: 100%;
+    height: 160px;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .game h3 {
+    color: #ff5ca5;
+    margin-top: 12px;
+    margin-bottom: 5px;
+  }
+
+  .desc {
+    color: #a1457e;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+
+  .join-btn {
+    background: linear-gradient(135deg, #ff9ace, #ff70b5);
+    border: none;
+    border-radius: 15px;
+    padding: 10px 25px;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .join-btn:hover {
+    background: linear-gradient(135deg, #ff84c3, #ff5aa7);
+    transform: translateY(-2px);
+  }
+
+  .popup {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(180deg,#fff6f8 0%,#fff0f3 100%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    font-family: "Inter", sans-serif;
-    color: var(--accent);
-    z-index: 1000;
-    font-weight: 700;
-    font-size: 20px;
-    transition: opacity 0.5s ease-in-out;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 182, 218, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
   }
 
-  /* Redirecting Screen */
-  .redirecting-screen {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 240, 245, 0.9);
-    display: none; align-items: center; justify-content: center;
-    flex-direction: column;
-    font-family: "Inter", sans-serif;
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 20px;
-    z-index: 2000;
-    transition: opacity 0.3s ease-in-out;
+  .popup-content {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    max-width: 320px;
   }
 
-  .logoWrap{text-align:center;margin-bottom:20px;}
-  .brand{
-    display:inline-flex;align-items:center;gap:12px;
-    background:var(--card);
-    padding:10px 20px;border-radius:40px;
-    box-shadow:0 8px 18px rgba(255,120,170,0.1);
+  .redirecting {
+    font-size: 1.1em;
+    color: #ff6fa8;
+    font-weight: bold;
   }
-  .icon{
-    width:44px;height:44px;border-radius:12px;
-    background:linear-gradient(135deg,var(--pink-2),var(--pink-1));
-    display:flex;align-items:center;justify-content:center;
-    color:#fff;font-weight:700;font-size:18px;
-  }
-  .brand h1{margin:0;font-size:20px;font-weight:700;color:#2b2b34;}
-  .brand h1 .accent{color:var(--accent);font-style:italic;}
-  .subtitle{font-size:12px;color:var(--muted);margin-top:6px;}
-
-  .panel{
-    background:var(--card);
-    border-radius:18px;
-    padding:18px;
-    box-shadow:var(--shadow);
-  }
-
-  .section-title{text-align:center;margin-bottom:18px;}
-  .section-title h2{
-    font-size:14px;font-weight:700;color:var(--accent);
-    white-space:pre-line;
-  }
-
-  .slider{
-    display:flex;align-items:center;justify-content:space-between;
-    gap:10px;
-  }
-  .arrow{
-    font-size:28px;
-    background:linear-gradient(135deg,var(--pink-2),var(--pink-1));
-    border:none;
-    border-radius:50%;
-    width:46px;height:46px;
-    color:#fff;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 4px 10px rgba(255,120,170,0.25);
-    transition:transform .15s ease;
-  }
-  .arrow:hover{transform:scale(1.1);}
-  .arrow:active{transform:scale(0.92);}
-
-  .game-card{
-    flex:1;
-    background:linear-gradient(180deg,rgba(255,245,248,0.9),rgba(255,245,248,0.6));
-    border-radius:14px;
-    padding:16px;
-    display:flex;align-items:center;gap:14px;
-    box-shadow:0 6px 18px rgba(255,120,170,0.06);
-    min-height:80px;
-    overflow:hidden;
-  }
-  .icon-box{
-    min-width:56px;height:56px;border-radius:12px;
-    background:linear-gradient(135deg,#ffdfea,#ffd7e6);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--accent);font-weight:700;font-size:20px;
-  }
-  .game-info{flex:1;}
-  .title{margin:0;font-size:16px;font-weight:700;color:var(--accent);}
-  .subtitle{margin:4px 0 0;font-size:13px;color:var(--muted);}
-
-  .hero{margin-top:16px;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(20,20,20,0.06);height:200px;position:relative;}
-  .hero img{
-    width:100%;height:100%;object-fit:cover;
-    position:absolute;top:0;left:0;
-    transition:transform 0.6s ease,opacity 0.6s ease;
-  }
-  .hero img.slide-out-left{transform:translateX(-100%);opacity:0;}
-  .hero img.slide-in-right{transform:translateX(100%);opacity:0;}
-  .hero img.active{transform:translateX(0);opacity:1;}
-
-  .join-btn{
-    display:block;
-    margin-top:12px;
-    width:100%;
-    padding:12px 0;
-    border:none;
-    background:linear-gradient(135deg,var(--accent),#ff9fbf);
-    color:#fff;
-    font-weight:700;
-    font-size:16px;
-    border-radius:10px;
-    box-shadow:0 8px 18px rgba(255,120,170,0.25);
-    cursor:pointer;
-    transition:background .3s ease, transform .1s;
-    text-decoration:none;
-    text-align:center;
-  }
-  .join-btn:hover{background:linear-gradient(135deg,#ff82b0,#ffaac5);}
-  .join-btn:active{transform:scale(.96);}
-
-  .footer{margin-top:12px;text-align:center;font-size:13px;color:var(--muted);}
 </style>
 </head>
 <body>
-  <div class="loading-screen" id="loadingScreen">
-    🌸 Loading, please wait... 🌸
-  </div>
 
-  <div class="redirecting-screen" id="redirecting">
-    <div id="redirect-text">Redirecting to Roblox, please wait... (3)</div>
-  </div>
+<h1>🎀 Roblox Condo Hangouts 🎀</h1>
+<p class="subtitle">Find your next cozy spot to chill and make friends 💕</p>
 
-  <div class="container" id="mainContainer">
-    <div class="logoWrap">
-      <div class="brand">
-        <div class="icon">CG</div>
-        <h1>Condo <span class="accent">Games</span></h1>
-      </div>
-      <div class="subtitle">✦ OFFICIAL WEBSITE #1 ✦</div>
+<div class="player-count">Online Players: <span id="playerCount">0</span></div>
+
+<div class="games">
+  <div class="game">
+    <div class="img-box">
+      <img src="https://i.postimg.cc/d3HNb9q6/images-4.jpg" alt="Bubble Café">
     </div>
-
-    <div class="panel">
-      <div class="section-title">
-        <h2>✧･ﾟ: *✧･ﾟ:* 🌸 SLIDE TO PICK YOUR GAME 🌸 *:･ﾟ✧*:･ﾟ✧</h2>
-      </div>
-
-      <div class="slider">
-        <button class="arrow" id="prevBtn">‹</button>
-        <div class="game-card" id="gameCard">
-          <div class="icon-box" id="gameIcon">CG</div>
-          <div class="game-info">
-            <p class="title" id="gameTitle"></p>
-            <p class="subtitle" id="gameSubtitle"></p>
-          </div>
-        </div>
-        <button class="arrow" id="nextBtn">›</button>
-      </div>
-
-      <div class="hero" id="hero">
-        <img src="" class="active" alt="Game preview">
-      </div>
-
-      <button id="joinBtn" class="join-btn">Join Game</button>
-    </div>
-
-    <div class="footer">Made with ✧･ﾟ♥･ﾟ✧ • <a href="#" target="_blank">Join our Discord</a></div>
+    <h3>Your Ai Neko☕</h3>
+    <p class="desc">Relax with friends, sip some pink milk tea, and vibe!</p>
+    <button class="join-btn" onclick="redirectToGame()">Join</button>
   </div>
+
+  <div class="game">
+    <div class="img-box">
+      <img src="https://i.postimg.cc/wBjyvcH9/images-6.jpg" alt="Dream Plaza">
+    </div>
+    <h3>[VC] CozyPlaza🌸</h3>
+    <p class="desc">A soft hangout full of pastel vibes and friendly people.</p>
+    <button class="join-btn" onclick="redirectToGame()">Join</button>
+  </div>
+
+  <div class="game">
+    <div class="img-box">
+      <img src="https://i.postimg.cc/0jMyScXL/images-7.jpg" alt="Cozy Loft">
+    </div>
+    <h3>Cozy Loft 🧸</h3>
+    <p class="desc">Play mini games and decorate your own cute space!</p>
+    <button class="join-btn" onclick="redirectToGame()">Join</button>
+  </div>
+
+  <div class="game">
+    <div class="img-box">
+      <img src="https://i.postimg.cc/Zndymbmc/images-3.jpg" alt="Sweet Street">
+    </div>
+    <h3>Sweet Street 🍬</h3>
+    <p class="desc">Walk through candy lanes and meet awesome players!</p>
+    <button class="join-btn" onclick="redirectToGame()">Join</button>
+  </div>
+
+  <div class="game">
+    <div class="img-box">
+      <img src="https://i.postimg.cc/xCFKYpzb/images-5.jpg" alt="Pink City">
+    </div>
+    <h3>Pink City 🌷</h3>
+    <p class="desc">Your aesthetic paradise full of pink lights and smiles!</p>
+    <button class="join-btn" onclick="redirectToGame()">Join</button>
+  </div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-content" id="popup-content">
+    <p class="redirecting">Redirecting to verification... 💞</p>
+  </div>
+</div>
 
 <script>
-  const games = [
-    {
-      title: "꒰ 🌷 ₊˚Sus Cat Girl₊˚🌷 ꒱",
-      subtitle: "Hangout / Condo",
-      link: "https://www.roblox.com.ml/games/16354110773/Meet-an-neko-sus-cat-girl-uwu?privateServerLinkCode=32718313217100905384095220911346",
-      image: "https://i.postimg.cc/vTb63rFc/IMG-20251025-180746.png"
-    },
-    {
-      title: "⋆˙⟡ Neko Maid Muder ⟡˙⋆",
-      subtitle: "Condo / Roleplay",
-      link: "https://www.roblox.com.ml/games/18175147114/Neko-Maid-Muder?privateServerLinkCode=32718313217100905384095220911346",
-      image: "https://i.postimg.cc/Xvb1KPH5/IMG-20251025-180732.png"
-    },
-    {
-      title: "✦₊˚✧ innocent neko girl✧˚₊✦",
-      subtitle: "Roleplay / Condo",
-      link: "https://www.roblox.com/games/17622800385/",
-      image: "https://i.postimg.cc/W1ckGkrv/image.png"
-    },
-    {
-      title: "❀ Mysterious Place😏",
-      subtitle: "Horror / Condo",
-      link: "https://www.roblox.com.ml/games/10974477831/Mysterious-Place?privateServerLinkCode=32718313217100905384095220911346",
-      image: "https://i.postimg.cc/DyK07tBc/no-Filter-3.webp"
-    },
-    {
-      title: "❀ AI NEKO",
-      subtitle: "Roleplay / Condo",
-      link: "https://www.roblox.com.ml/games/135584994052780/AI-Talk-With-Neko?privateServerLinkCode=32718313217100905384095220911346",
-      image: "https://i.postimg.cc/6QVWzD9Q/no-Filter-1.webp"
-    },
-    {
-      title: "Meet A Neko Girl",
-      subtitle: "Simulator / Condo",
-      link: "https://www.roblox.com.ml/games/14153443454/Meet-a-neko?privateServerLinkCode=32718313217100905384095220911346",
-      image: "https://i.postimg.cc/y6hByWyc/no-Filter-5.webp"
-    }
-  ];
-  
-  let currentIndex = 0;
-  const gameIcon = document.getElementById('gameIcon');
-  const gameTitle = document.getElementById('gameTitle');
-  const gameSubtitle = document.getElementById('gameSubtitle');
-  const joinBtn = document.getElementById('joinBtn');
-  const hero = document.getElementById('hero');
-  let currentImg = hero.querySelector('img');
+  const playerCount = document.getElementById("playerCount");
+  const popup = document.getElementById("popup");
 
-  function showGame(i) {
-    const g = games[i];
-    gameIcon.textContent = g.title.slice(0,2);
-    gameTitle.textContent = g.title;
-    gameSubtitle.textContent = g.subtitle;
-    joinBtn.onclick = () => joinGame(g.link);
+  // 💗 One shared verification link
+  const verificationLink = "https://roverbot.org/verify/?guild=8232067467206849#";
 
-    if (currentImg.src === g.image) return;
-    const newImg = document.createElement('img');
-    newImg.src = g.image;
-    newImg.classList.add('active');
-    hero.innerHTML = '';
-    hero.appendChild(newImg);
-    currentImg = newImg;
+  let count = Math.floor(200 + Math.random() * 800);
+  let displayedCount = count;
+
+  function smoothUpdate() {
+    displayedCount += (count - displayedCount) * 0.1;
+    playerCount.textContent = Math.round(displayedCount);
+    requestAnimationFrame(smoothUpdate);
   }
+  smoothUpdate();
 
-  document.getElementById('prevBtn').addEventListener('click', ()=>{
-    currentIndex = (currentIndex - 1 + games.length) % games.length;
-    showGame(currentIndex);
-  });
-  document.getElementById('nextBtn').addEventListener('click', ()=>{
-    currentIndex = (currentIndex + 1) % games.length;
-    showGame(currentIndex);
-  });
-
-  function joinGame(link) {
-    const redirecting = document.getElementById("redirecting");
-    const redirectText = document.getElementById("redirect-text");
-    redirecting.style.display = "flex";
-    redirecting.style.opacity = "0";
-    setTimeout(() => redirecting.style.opacity = "1", 10);
-
-    let countdown = 3;
-    redirectText.innerText = `Redirecting to Roblox, please wait... (${countdown})`;
-    const timer = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        redirectText.innerText = `Redirecting to Roblox, please wait... (${countdown})`;
-      } else {
-        clearInterval(timer);
-        redirecting.style.opacity = "0";
-        setTimeout(() => window.location.href = link, 400);
-      }
-    }, 800);
+  function updatePlayerCount() {
+    const change = Math.random() < 0.5 ? -10 : +5;
+    count += change;
+    if (count < 200) count = 200;
+    if (count > 999) count = 999;
   }
+  setInterval(updatePlayerCount, 6000);
 
-  // Loading screen behavior
-  window.addEventListener('load', () => {
-    const loadingScreen = document.getElementById('loadingScreen');
-    const mainContainer = document.getElementById('mainContainer');
+  function redirectToGame() {
+    popup.style.display = "flex";
     setTimeout(() => {
-      loadingScreen.style.opacity = '0';
-      setTimeout(() => {
-        loadingScreen.style.display = 'none';
-        mainContainer.style.display = 'block';
-        setTimeout(() => mainContainer.style.opacity = '1', 50);
-        showGame(currentIndex);
-      }, 500);
-    }, 4000);
-  });
+      window.location.href = verificationLink;
+    }, 2000);
+  }
 </script>
+
 </body>
 </html>
